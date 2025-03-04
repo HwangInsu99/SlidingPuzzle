@@ -56,7 +56,7 @@ void QuadPuzzle::Shuffle() {
 		for (int j = 0; j < 4; j++) {
 			checkNum[number] = puzzleNum[i][j];
 			if (puzzleNum[i][j] == 15) {
-				if (i % 2 == 0)
+				if (i % 2 != 0)
 					even = false;
 				else
 					even = true;
@@ -77,14 +77,14 @@ void QuadPuzzle::Possible() {
 		}
 	}
 
-	if (even && inversion % 2 != 0)
-	{
+	if (even && inversion % 2 == 0)
 		Shuffle();
-	}
-	else if (!even && inversion % 2 == 0 && inversion == 0)
-	{
+
+	else if (!even && inversion % 2 != 0)
 		Shuffle();
-	}
+
+	else if (inversion == 0)
+		Shuffle();
 
 }
 
