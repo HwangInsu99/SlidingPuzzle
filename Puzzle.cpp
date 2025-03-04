@@ -64,7 +64,7 @@ void Puzzle::Possible() {
 		}
 	}
 	
-	if (inversion % 2 != 0 && inversion == 0)
+	if (inversion % 2 != 0 || inversion == 0)
 		Shuffle();
 		
 }
