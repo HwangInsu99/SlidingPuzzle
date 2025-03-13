@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "QuadPuzzle.h"
 QuadPuzzle::QuadPuzzle() {
-	inputCount = 0;
 	number = 0;
 	startX = 150;
 	startY = 75;
 	clear = false;
 	inversion = 0;
 	even = false;
+	srand((unsigned int)time(NULL));
 
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 4; j++) {
@@ -38,14 +38,17 @@ void QuadPuzzle::LoadImage() {
 }
 // ÆÛÁñÀ»¼¯¾î¼­ ¹èÄ¡ÇÑ´Ù
 void QuadPuzzle::Shuffle() {
-	srand((unsigned int)time(NULL));
 	number = 0;
 
 	for (int i = 0; i < 45; i++) {
-		int x = rand() % 4;
-		int y = rand() % 4;
-		int a = rand() % 4;
-		int b = rand() % 4;
+		int x, y, a, b;
+
+		do {
+			x = rand() % 4;
+			y = rand() % 4;
+			a = rand() % 4;
+			b = rand() % 4;
+		} while (x == a && y == b);
 
 		int temp = puzzleNum[x][y];
 		puzzleNum[x][y] = puzzleNum[a][b];

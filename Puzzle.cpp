@@ -2,12 +2,12 @@
 #include "Puzzle.h"
 
 Puzzle::Puzzle() {
-	inputCount = 0;
 	number = 0;
 	startX = 150;
 	startY = 75;
 	clear = false;
 	inversion = 0;
+	srand((unsigned int)time(NULL));
 
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -31,15 +31,19 @@ void Puzzle::LoadImage() {
 }
 // ÆÛÁñÀ»¼¯¾î¼­ ¹èÄ¡ÇÑ´Ù
 void Puzzle::Shuffle() {
-	srand((unsigned int)time(NULL));
+	
 	number = 0;
 
 	for (int i = 0; i < 18; i++) {
-		int x = rand() % 3;
-		int y = rand() % 3;
-		int a = rand() % 3;
-		int b = rand() % 3;
+		int x, y, a, b;
 
+		do {
+			x = rand() % 3;
+			y = rand() % 3;
+			a = rand() % 3;
+			b = rand() % 3;
+		} while (x == a && y == b);
+		
 		int temp = puzzleNum[x][y];
 		puzzleNum[x][y] = puzzleNum[a][b];
 		puzzleNum[a][b] = temp;

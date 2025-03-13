@@ -5,7 +5,6 @@ public:
 	int puzzleNum[3][3];
 	int checkNum[9];
 
-	int inputCount;
 	int number;
 	int startX;
 	int startY;
