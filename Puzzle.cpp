@@ -98,68 +98,25 @@ BOOL Puzzle::Check() {
 }
 //마우스 클릭좌표에 이동가능한 퍼즐이 있는지 확인 후 이동
 BOOL Puzzle::Change(int x, int y) {
-	if (x == 0) {
-		if (puzzleNum[x + 1][y] == 8) {
-			puzzleNum[x + 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
+	// 네 방향 (상, 하, 좌, 우) 이동 방향 정의
+	int dx[] = { -1, 1, 0, 0 };
+	int dy[] = { 0, 0, -1, 1 };
+
+	// 네 방향을 검사
+	for (int i = 0; i < 4; i++) {
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+
+		// 배열 범위를 벗어나지 않는지 확인
+		if (nx >= 0 && nx < 3 && ny >= 0 && ny < 3) {
+			if (puzzleNum[nx][ny] == 8) {
+				puzzleNum[nx][ny] = puzzleNum[x][y];
+				puzzleNum[x][y] = 8;
+				return TRUE;
+			}
 		}
-		else if (puzzleNum[x][y + 1] == 8 && y != 2) {
-			puzzleNum[x][y + 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y - 1] == 8 && y != 0) {
-			puzzleNum[x][y - 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else
-			return FALSE;
 	}
-	else if (x == 1) {
-		if (puzzleNum[x - 1][y] == 8) {
-			puzzleNum[x - 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else if (puzzleNum[x + 1][y] == 8) {
-			puzzleNum[x + 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y + 1] == 8 && y != 2) {
-			puzzleNum[x][y + 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y - 1] == 8 && y != 0) {
-			puzzleNum[x][y - 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else
-			return FALSE;
-	}
-	else {
-		if (puzzleNum[x - 1][y] == 8) {
-			puzzleNum[x - 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y + 1] == 8 && y != 2) {
-			puzzleNum[x][y + 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y - 1] == 8 && y != 0) {
-			puzzleNum[x][y - 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 8;
-			return TRUE;
-		}
-		else
-			return FALSE;
-	}
+	return FALSE;
 }
 
 void Puzzle::Draw(CDC& dc) {

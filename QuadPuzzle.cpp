@@ -36,7 +36,7 @@ void QuadPuzzle::LoadImage() {
 	images[14].Load(L"images\\4_15.jpg");
 	images[15].Load(L"images\\4_16.jpg");
 }
-// 퍼즐을섞어서 배치한다
+
 void QuadPuzzle::Shuffle() {
 	number = 0;
 
@@ -59,17 +59,17 @@ void QuadPuzzle::Shuffle() {
 		for (int j = 0; j < 4; j++) {
 			checkNum[number] = puzzleNum[i][j];
 			if (puzzleNum[i][j] == 15) {
-				if (i % 2 != 0)
-					even = false;
-				else
+				if (i % 2 == 0)
 					even = true;
+				else
+					even = false;
 			}
 			number++;
 		}
 	}
 	Possible();
 }
-//클리어 가능여부 및 완성상태인지 확인 후 다시 다시 섞을지 결정한다
+
 void QuadPuzzle::Possible() {
 	inversion = 0;
 
@@ -114,94 +114,24 @@ BOOL QuadPuzzle::Check() {
 	else
 		return FALSE;
 }
-//마우스 클릭좌표에 이동가능한 퍼즐이 있는지 확인 후 이동
+
 BOOL QuadPuzzle::Change(int x, int y) {
-	if (x == 0) {
-		if (puzzleNum[x + 1][y] == 15) {
-			puzzleNum[x + 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
+	int dx[] = { -1, 1, 0, 0 };
+	int dy[] = { 0, 0, -1, 1 };
+
+	for (int i = 0; i < 4; i++) {
+		int nx = x + dx[i];
+		int ny = y + dy[i];
+
+		if (nx >= 0 && nx < 4 && ny >= 0 && ny < 4) {
+			if (puzzleNum[nx][ny] == 15) {
+				puzzleNum[nx][ny] = puzzleNum[x][y];
+				puzzleNum[x][y] = 15;
+				return TRUE;
+			}
 		}
-		else if (puzzleNum[x][y + 1] == 15 && y != 3) {
-			puzzleNum[x][y + 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y - 1] == 15 && y != 0) {
-			puzzleNum[x][y - 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else
-			return FALSE;
 	}
-	else if (x == 1) {
-		if (puzzleNum[x - 1][y] == 15) {
-			puzzleNum[x - 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x + 1][y] == 15) {
-			puzzleNum[x + 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y + 1] == 15 && y != 3) {
-			puzzleNum[x][y + 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y - 1] == 15 && y != 0) {
-			puzzleNum[x][y - 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else
-			return FALSE;
-	}
-	else if (x == 2) {
-		if (puzzleNum[x - 1][y] == 15) {
-			puzzleNum[x - 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x + 1][y] == 15) {
-			puzzleNum[x + 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y + 1] == 15 && y != 3) {
-			puzzleNum[x][y + 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y - 1] == 15 && y != 0) {
-			puzzleNum[x][y - 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else
-			return FALSE;
-	}
-	else{
-		if (puzzleNum[x - 1][y] == 15) {
-			puzzleNum[x - 1][y] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y + 1] == 15 && y != 3) {
-			puzzleNum[x][y + 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else if (puzzleNum[x][y - 1] == 15 && y != 0) {
-			puzzleNum[x][y - 1] = puzzleNum[x][y];
-			puzzleNum[x][y] = 15;
-			return TRUE;
-		}
-		else
-			return FALSE;
-	}
+	return FALSE;
 }
 
 void QuadPuzzle::Draw(CDC& dc) {

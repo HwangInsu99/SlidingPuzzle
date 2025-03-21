@@ -56,7 +56,7 @@ END_MESSAGE_MAP()
 
 
 
-CSlidingPuzzleDlg::CSlidingPuzzleDlg(CWnd* pParent /*=nullptr*/)
+CSlidingPuzzleDlg::CSlidingPuzzleDlg(CWnd* pParent)
 	: CDialogEx(IDD_SLIDINGPUZZLE_DIALOG, pParent)
 {//초기화선언
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -67,9 +67,15 @@ CSlidingPuzzleDlg::CSlidingPuzzleDlg(CWnd* pParent /*=nullptr*/)
 	quadra = FALSE; // 4X4퍼즐일 시 TRUE
 	twink = FALSE; // 반짝이는 이펙트가 출력될때 TRUE
 	completed = FALSE; // 퍼즐완성시 TRUE
-	count = 0; // 반짝이는 이펙트출력의 시간조절에 사용
+	count = 0; // 반짝이는 이펙트출력의 초기화에 사용
 	moveCount = 0;
 	origin.Load(L"images\\Completed.jpg");
+}
+
+CSlidingPuzzleDlg::~CSlidingPuzzleDlg() {
+	delete puzzle;
+	delete quadPuzzle;
+	delete twinkle;
 }
 
 void CSlidingPuzzleDlg::DoDataExchange(CDataExchange* pDX)
@@ -188,7 +194,6 @@ void CSlidingPuzzleDlg::OnPaint()
 	bmp.DeleteObject();
 
 	CDialogEx::OnPaint();
-		
 }
 
 HCURSOR CSlidingPuzzleDlg::OnQueryDragIcon()
@@ -200,7 +205,8 @@ void CSlidingPuzzleDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	//마우스 클릭이 퍼즐내에서 실행됬는지 확인
 	//3X3
-	if (triple && point.x >= puzzle->startX && point.x <= puzzle->startX + 300 && point.y >= puzzle->startY && point.y < puzzle->startY + 300)
+	if (triple && point.x >= puzzle->startX && point.x <= puzzle->startX + 300
+		&& point.y >= puzzle->startY && point.y < puzzle->startY + 300)
 	{
 		//클릭된 좌표가 퍼즐의 어느위치인지 계산
 		int i = (int)(point.y - puzzle->startY) / 100;
@@ -213,7 +219,8 @@ void CSlidingPuzzleDlg::OnLButtonDown(UINT nFlags, CPoint point)
 		Invalidate();
 	}
 	//4X4
-	else if (quadra && point.x >= puzzle->startX && point.x <= puzzle->startX + 300 && point.y >= puzzle->startY && point.y < puzzle->startY + 300)
+	else if (quadra && point.x >= quadPuzzle->startX && point.x <= quadPuzzle->startX + 300
+		&& point.y >= quadPuzzle->startY && point.y < quadPuzzle->startY + 300)
 	{
 		int i = (int)(point.y - quadPuzzle->startY) / 75;
 		int j = (int)(point.x - quadPuzzle->startX) / 75;
